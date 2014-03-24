@@ -26,6 +26,7 @@ module Pingdom
         username,
         password
       )
+      @cache = {}
     end
 
     def get(uri, options = {})
@@ -34,25 +35,30 @@ module Pingdom
     end
 
     def put(uri, body, options = {})
+      @cache.clear
       options.merge!({ app_key: @key })
       @api[uri].put body, options
     end
 
     def post(uri, body, options = {})
+      @cache.clear
       options.merge!({ app_key: @key })
       @api[uri].post body, options
     end
 
     def delete(uri, options = {})
+      @cache.clear
       options.merge!({ app_key: @key })
       @api[uri].delete options
     end
 
     def checks(options = {})
-      require 'json'
-      response = get('/checks')
-      data = ::JSON.parse(response)
-      data['checks']
+      @cache[:checks] ||= begin
+        require 'json'
+        response = get('/checks')
+        data = ::JSON.parse(response)
+        data['checks']
+      end
     end
 
   end
