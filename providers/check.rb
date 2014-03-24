@@ -180,7 +180,6 @@ def delete_check(name, type)
 end
 
 def update_check(name, type, host, params)
-
   clean_params = params.keys_to_s
 
   merged_params = { 'name' => name, 'host' => host }
@@ -195,8 +194,7 @@ def update_check(name, type, host, params)
 end
 
 def check_exists?(name, type)
-  check = find_check(name, type)
-  check.nil? ? false : true
+  !!find_check(name, type)
 end
 
 def check_status(name, type)
