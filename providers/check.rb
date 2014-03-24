@@ -219,8 +219,7 @@ def check_details(name, type)
 end
 
 def check_id(name, type)
-  if check_exists?(name, type)
-    check = find_check(name, type)
+  if check = find_check(name, type)
     check['id']
   end
 end
