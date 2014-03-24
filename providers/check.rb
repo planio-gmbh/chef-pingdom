@@ -140,7 +140,7 @@ def sanitize_params(params)
 end
 
 def pingdom_api
-  pingdom_api ||= Pingdom::Client.new(
+  @pingdom_api ||= Pingdom::Client.new(
     new_resource.username,
     new_resource.password,
     new_resource.api_key
