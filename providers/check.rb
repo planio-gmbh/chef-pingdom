@@ -228,8 +228,6 @@ def check_id(name, type)
 end
 
 def checks_differ?(current_check, new_check)
-  modified = false
-
   params = new_check.check_params.keys_to_s
   params.merge!({ 'hostname' => new_check.host  })
 
@@ -247,18 +245,14 @@ def checks_differ?(current_check, new_check)
 
   params = sanitize_params(params)
 
-  params.keys.each do |k|
+  params.keys.any? do |k|
     Chef::Log.debug("comparing values for #{k}")
     Chef::Log.debug("current: #{current_check.check_params[k].to_s}")
     Chef::Log.debug("new: #{params[k].to_s}")
+
     if current_check.check_params[k].to_s != params[k].to_s
       Chef::Log.debug("value of parameter #{k} differs")
-      modified = true
-      # we only need one parameter to differ, so return now
-      return modified
-    else
-      modified = false
+      true
     end
   end
-  modified
 end
